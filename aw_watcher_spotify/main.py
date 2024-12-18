@@ -34,26 +34,37 @@ def get_current_track(sp) -> Optional[dict]:
 
 
 def data_from_track(track: dict, sp) -> dict:
-    song_name = track["item"]["name"]
-    # local files do not have IDs
-    data = (
-        (sp.audio_features(track["item"]["id"])[0] or {}) if track["item"]["id"] else {}
-    )
-    data["title"] = song_name
-    data["uri"] = track["item"]["uri"]
+    # song_name = track["item"]["name"]
+    # # local files do not have IDs
+    # data = (
+    #     (sp.audio_features(track["item"]["id"])[0] or {}) if track["item"]["id"] else {}
+    # )
+    # data["title"] = song_name
+    # data["uri"] = track["item"]["uri"]
 
-    if track["item"]["type"] == "track":
-        artist_name = track["item"]["artists"][0]["name"]
-        album_name = track["item"]["album"]["name"]
-        data["popularity"] = track["item"]["popularity"] or -1
-        data["album"] = album_name
-        data["artist"] = artist_name
-        logging.debug("TRACK: {} - {} ({})".format(song_name, artist_name, album_name))
-    elif track["item"]["type"] == "episode":
-        publisher = track["item"]["show"]["publisher"]
-        data["artist"] = publisher
-        data["album"] = track["item"]["show"]["name"]
-        logging.debug("EPISODE: {} - {}".format(song_name, publisher))
+    # if track["item"]["type"] == "track":
+    #     artist_name = track["item"]["artists"][0]["name"]
+    #     album_name = track["item"]["album"]["name"]
+    #     data["popularity"] = track["item"]["popularity"] or -1
+    #     data["album"] = album_name
+    #     data["artist"] = artist_name
+    #     logging.debug("TRACK: {} - {} ({})".format(song_name, artist_name, album_name))
+    # elif track["item"]["type"] == "episode":
+    #     publisher = track["item"]["show"]["publisher"]
+    #     data["artist"] = publisher
+    #     data["album"] = track["item"]["show"]["name"]
+    #     logging.debug("EPISODE: {} - {}".format(song_name, publisher))
+
+    song_name = track["item"]["name"]
+    album_name = track["item"]["album"]["name"]
+    artist_name = track["item"]["artists"][0]["name"]
+    logging.debug("{} - {} ({})".format(song_name, artist_name, album_name))
+    data = {
+        "title": song_name,
+        "artist": artist_name,
+        "album": album_name,
+        "uri": track["item"]["uri"],
+    }
 
     return data
 
